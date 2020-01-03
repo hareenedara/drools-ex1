@@ -1,0 +1,31 @@
+package com.example.drools
+
+import com.example.drools.model.ClientApp;
+import com.example.drools.model.Result;
+
+rule "signal A validation"
+    salience 10
+    enabled true
+    no-loop true
+    when
+        client : ClientApp(signal.sigA == "1")
+        result : Result(results: results)
+    then
+        results.add("SignalA Success");
+        result.setAction("Proceed");
+        update(result);
+end
+
+rule "signal B and C validation"
+    salience 10
+    enabled true
+    no-loop true
+
+    when
+        client : ClientApp(sigB: signal.sigB, sigC: signal.sigC, sigB == "2" && sigC == "3")
+        result : Result(results: results)
+    then
+        results.add("SignalB Success");
+        result.setAction("Proceed");
+        update(result);
+end
